@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import { ShoppingCart, UserPlus, LogIn, LogOut, Lock } from "lucide-react";
 import { useUserStore } from '../stores/useUserStore';
-import { useCartStore } from '../stores/useCartStore';
+import { useCartStore } from '../stores/useCartStore.js';
 
 const Navbar = () => {
     const { user, logout } = useUserStore();
@@ -22,7 +22,9 @@ const Navbar = () => {
                         <Link to={'/cart'} className='nav-item'>
                             <ShoppingCart size={20} className='icon icon-cart'/>
                             <span className='nav-item-text'>Cart</span>
-                            <span className='bubble cart-item-num'>{cart.length}</span>
+                            {cart.length > 0 && (
+                                <span className='bubble cart-item-num'>{cart.length}</span>
+                            )}
                         </Link>
                     )}
                     { isAdmin && (
