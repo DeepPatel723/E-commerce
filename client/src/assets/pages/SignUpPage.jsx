@@ -21,7 +21,7 @@ const SignUpPage = () => {
   }
 
   return (
-    <div className="form-container">
+    <div className="form-container container">
       <motion.div className="animation-box"
         initial={{ opacity: 0, y: -20 }}
 				animate={{ opacity: 1, y: 0 }}

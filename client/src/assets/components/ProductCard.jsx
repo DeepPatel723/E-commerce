@@ -20,8 +20,8 @@ const ProductCard = ({product}) => {
   return (
     <div className='card product-card'>
       <div className="card-inner">
-        <div className="card-media">
-            <img src={product.image} alt="product Image" />
+        <div className="card-media card-image">
+            <img src={product.image} alt="product Image" className='img media' />
         </div>
         <div className="card-content">
             <div className="card-information">
