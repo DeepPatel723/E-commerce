@@ -14,6 +14,8 @@ import AdminPage from './assets/pages/AdminPage'
 import CategoryPage from './assets/pages/CategoryPage'
 import CartPage from './assets/pages/CartPage'
 import { useCartStore } from './assets/stores/useCartStore'
+import PurchaseSuccessPage from './assets/pages/PurchaseSuccessPage'
+import PurchaseCancelPage from './assets/pages/PurchaseCancelPage'
 
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
@@ -42,6 +44,8 @@ function App() {
           <Route path='/admin' element={user?.role === "admin" ? <AdminPage />: <Navigate to={'/login'}/>}/>
           <Route path='/category/:category' element={<CategoryPage />} />
           <Route path='/cart' element={user ? <CartPage />: <Navigate to={'/login'}/> } />
+          <Route path='/purchase-success' element={user ? <PurchaseSuccessPage />: <Navigate to={'/login'}/> } />
+          <Route path='/purchase-cancel' element={user ? <PurchaseCancelPage />: <Navigate to={'/login'}/> } />
         </Routes>
       </div>
       <Toaster/>
