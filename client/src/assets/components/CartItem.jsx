@@ -7,7 +7,7 @@ const CartItem = ({ item }) => {
   return (
     <div className='cart-item-list'>
         <div className="item-lists">
-            <div className="item-list cart-item-image">
+            <div className="item-list cart-item-image card-image">
                 <img src={item.image} className='media cart-item-media'/>
             </div>
             <div className="item-list cart-item-content">
