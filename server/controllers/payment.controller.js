@@ -14,7 +14,7 @@ export const createCheckoutSession = async (req, res) => {
 
         const lineItem = products.map((product) => {
             const amount = Math.round(product.price * 100);
-            // totalAmount = amount * (product.quantity || 1);
+            totalAmount = amount * (product.quantity || 1);
             
             console.log("Product Data:", {
                 name: product.name,
@@ -23,10 +23,10 @@ export const createCheckoutSession = async (req, res) => {
 
             return{
                 price_data:{
-                    currency:"INR",
+                    currency:"USD",
                     product_data:{
                         name: product.name,
-                        image: [product.image],
+                        images: [product.image],
                     },
                     unit_amount: amount,
                 },
@@ -34,7 +34,10 @@ export const createCheckoutSession = async (req, res) => {
             }
         });
         
-        // console.log("dfhfuie",lineItem.product_data);  
+        // console.log("dfhfuie",lineItem.product_data); 
+        // lineItem.forEach(item => {
+        //     console.log("Product Data:gfsdejghb", item.price_data.product_data);
+        // }); 
 
         let coupon = null;
         if (couponCode) {
@@ -68,7 +71,7 @@ export const createCheckoutSession = async (req, res) => {
                 )
             }
         });
-
+        console.log(session);
         if (totalAmount >= 20000) {
             await createNewCoupon(req.user._id);
         }
