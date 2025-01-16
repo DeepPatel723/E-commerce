@@ -10,28 +10,44 @@ export const getCoupon = async (req, res) =>{
     }
 };
 
-export const validateCoupon = async (req, res) =>{
+export const validateCoupon = async (req, res) => {
     try {
         const { code } = req.body;
-        const coupon = await Coupon.findOne({ code: code, userId: req.user._id, isActive: true });
+
+        // Validate input
+        if (!code) {
+            return res.status(400).json({ message: "Coupon code is required" });
+        }
+
+        // Find coupon in the database
+        const coupon = await Coupon.findOne({ 
+            code: code.trim(), 
+            userId: req.user._id, 
+            isActive: true 
+        });
 
         if (!coupon) {
-            return res.status(404).json({ message: "Coupon Not Found"});
+            return res.status(404).json({ message: "Coupon Not Found" });
         }
 
-        if(coupon.expirationDate < new Date()){
-            coupon.isActive = false;
+        // Check if the coupon is expired
+        if (coupon.expirationDate && coupon.expirationDate < new Date()) {
+            coupon.isActive = false; // Mark coupon as inactive
             await coupon.save();
-            return res.status(404).json({ message: "Coupon Is Expried"})
+            return res.status(400).json({ message: "Coupon has expired" });
         }
 
-        res.json({
-            message: "Coupon Is Valid",
+        // Return success response
+        return res.json({
+            message: "Coupon is valid",
             code: coupon.code,
-            discountPercentage: coupon.discountPercentage
-        })
+            discountPercentage: coupon.discountPercentage,
+        });
     } catch (error) {
-        console.log("Error in validateCoupon controller", error.message);
-		res.status(500).json({ message: "Server error", error: error.message });
+        console.error("Error in validateCoupon controller:", error);
+        return res.status(500).json({ 
+            message: "Server error", 
+            error: error.message 
+        });
     }
 };

@@ -1,12 +1,12 @@
 import express from "express";
 import { adminRoute, protectRoute } from "../middleware/auth.middleware.js";
-import { getDailySalesData } from "../controllers/analytics.controller.js";
+import { getAnalyticsData, getDailySalesData } from "../controllers/analytics.controller.js";
 
 const router = express.Router();
 
-router.get("/", adminRoute, protectRoute, async (req, res) => {
+router.get("/", protectRoute, adminRoute, async (req, res) => {
     try {
-        const analyticsData = await getDailySalesData();
+        const analyticsData = await getAnalyticsData();
 
         const endDate = new Date();
         const startDate = new Date(endDate.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -15,7 +15,7 @@ router.get("/", adminRoute, protectRoute, async (req, res) => {
 
         res.json({
             analyticsData,
-            dailySalesData
+            dailySalesData,
         });
     } catch (error) {
         console.log("Error in analytics route", error.message);

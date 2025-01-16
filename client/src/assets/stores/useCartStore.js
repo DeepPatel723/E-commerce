@@ -18,16 +18,29 @@ export const useCartStore = create((set, get) => ({
         }
     },
 
-    applyCoupon: async () => {
+    applyCoupon: async (code) => {
+        if (!code) {
+            toast.error("Please enter a coupon code");
+            return;
+        }
+    
         try {
             const response = await axiosInsatnce.post("/coupons/validate", { code });
             set({ coupon: response.data, isCouponAppiled: true });
             get().calculateTotals();
-            toast.success("Coupon Applied Successfully")
+            toast.success("Coupon Applied Successfully");
         } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to apply Coupon")
+            if (error.response?.status === 404) {
+                toast.error("Coupon not found");
+            } else if (error.response?.status === 400) {
+                toast.error("Invalid coupon");
+            } else {
+                toast.error(error.response?.data?.message || "Failed to apply Coupon");
+            }
+            console.error("Error applying coupon:", error);
         }
     },
+    
 
     removeCoupon: async (params) => {
         set({ coupon: null, isCouponAppiled: false });
