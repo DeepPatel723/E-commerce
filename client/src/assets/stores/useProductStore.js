@@ -75,7 +75,7 @@ export const useProductStore = create((set) => ({
         }
     },
 
-    fetchFeaturedProduct: async (productId) => {
+    fetchFeaturedProducts: async (productId) => {
         set({loading: true});
         try {
             const response = await axiosInsatnce.get(`/products/featured`);
